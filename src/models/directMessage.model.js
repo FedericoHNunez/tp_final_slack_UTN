@@ -8,16 +8,16 @@ const directMessageSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
-        id_receptor: {
+        id_receiver: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
             ref: USER_COLLECTION_NAME
         },
-        id_emisor: {
+        id_sender: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
             ref: USER_COLLECTION_NAME
-        }
+        },
     },
     {
         timestamps: true

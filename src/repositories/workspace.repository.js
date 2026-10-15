@@ -3,7 +3,7 @@ import workspaceModel from '../models/workspace.model.js';
 
 class WorkspaceRepository extends BaseRepository {
     constructor() {
-        super(workspaceModel, ['name', 'description'], ['startDate', 'endDate']);
+        super(workspaceModel, 'description');
     }
 
     async create(nombre, description) {
@@ -14,6 +14,9 @@ class WorkspaceRepository extends BaseRepository {
         return workspaces;
     }
 
+    async getWorkspacesByUserId(user_id) {
+        return await this.model.find({ id_user: user_id });
+    }
 
 }
 

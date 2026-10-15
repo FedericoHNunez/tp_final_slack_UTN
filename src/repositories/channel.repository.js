@@ -3,7 +3,7 @@ import channelModel from "../models/channel.model.js";
 
 class ChannelRepository extends BaseRepository {
   constructor() {
-    super(channelModel);
+    super(channelModel, 'name');
   }
 
   async create(name, description, id_workspace) {
@@ -26,7 +26,7 @@ class ChannelRepository extends BaseRepository {
     const result = await this.model.findByIdAndUpdate(
       channelId,
       { name, description },
-      { new: true },
+      { returnDocument: 'after' },
     );
     return result;
   }

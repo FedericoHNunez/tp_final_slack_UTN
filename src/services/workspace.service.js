@@ -1,9 +1,31 @@
 import workspaceRepository from "../repositories/workspace.repository.js";
 import ServerError from "../helpers/error.helper.js";
+import userRepository from "../repositories/user.repository.js";
 
 class WorkspaceService {
-    async getWorkspaces(name, description) {
-        return await workspaceRepository.get({ name, description });
+    async getWorkspaces(filter = null) {
+        if (!filter) {
+            return await workspaceRepository.getAll();
+        }
+        return await workspaceRepository.getByOneSearchTerm(filter);
+    }
+
+    async getWorkspacesByUserId(user_id) {
+        if (!user_id) {
+            throw new ServerError(
+                "Missing required fields: user_id is required.",
+                400
+            );
+        }
+        const userExist = await userRepository.getById(user_id);
+        if (!userExist) {
+            throw new ServerError(
+                "User not found.",
+                404
+            );
+        }
+
+        return await workspaceRepository.getWorkspacesByUserId(user_id);
     }
 
     async createWorkspace(name, description) {

@@ -3,23 +3,18 @@ import successResponse from "../helpers/response.helper.js";
 
 
 class UserController {
-    async getUsers(req, res) {
-        const { userName } = req.query;
-        
-        const userList = await userService.getUsers(userName);
-        
-        return successResponse(res, userName ? "users retrieved by search term" : "get all users", { users: userList });
-
-    }
-
     async getUserById(req, res) {
-        const { user_id } = req.params;
-
+        const user_id = req.user.id;
         const user = await userService.getUserById(user_id);
-
         return successResponse(res, "User retrieved successfully", { user });
     }
 
+    async deleteUser(req, res) {
+        const user_id = req.user.id;
+        console.log(user_id);
+        const user = await userService.deleteUser(user_id);
+        return successResponse(res, "User deleted successfully", { user });
+    }
 
 }
 

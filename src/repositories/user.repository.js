@@ -3,7 +3,7 @@ import userModel from "../models/user.model.js";
 
 class UserRepository extends BaseRepository {
     constructor() {
-        super(userModel, ['userName']);
+        super(userModel, 'userName');
     }
 
     async create(userName, email, password) {
@@ -44,6 +44,7 @@ class UserRepository extends BaseRepository {
             }
         );
     }
+
 }
 
 const userRepository = new UserRepository();
