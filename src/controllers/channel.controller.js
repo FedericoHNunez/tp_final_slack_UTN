@@ -3,22 +3,18 @@ import successResponse from "../helpers/response.helper.js";
 
 class ChannelControler {
 
-    async getChannels(req, res) {
-        const { name } = req.query;
-        const channels = await channelService.getChannels(name);
-        return successResponse(res, "Channels fetched successfully.", { channels });
-    }
-
-    async getAllChannels(req, res) {
-        return await this.getChannels(req, res);
-    }
-
     async createChannel(req, res) {
-        const { name, description, id_workspace } = req.body;
-        const channel = await channelService.createChannel(name, description, id_workspace);
+        const { workspace_id } = req.params;
+        const { name, description } = req.body;
+        const channel = await channelService.createChannel(name, description, workspace_id);
         return successResponse(res, "Channel created successfully.", channel, 201);
     }
 
+    async getMessagesByChannelId(req, res) {
+        const { channel_id } = req.params;
+        const messagesChannel = await channelService.getMessagesByChannelId(channel_id);
+        return successResponse(res, "Messages fetched successfully.", messagesChannel, 200);
+    }
 }
 
 const channelController = new ChannelControler();

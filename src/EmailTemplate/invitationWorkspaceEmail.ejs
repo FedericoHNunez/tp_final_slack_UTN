@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>¡Te invitaron a un espacio de trabajo en Slak!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f5f7;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .email-wrapper {
+            width: 100%;
+            background-color: #f4f5f7;
+            padding: 40px 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .email-header {
+            background: linear-gradient(135deg, #611f69 0%, #4a154b 100%);
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .logo {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0;
+        }
+
+        .logo span {
+            color: #e0a9ff;
+        }
+
+        .header-tag {
+            display: inline-block;
+            margin-top: 10px;
+            background-color: rgba(255, 255, 255, 0.18);
+            color: #f3d9fa;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding: 4px 14px;
+            border-radius: 20px;
+        }
+
+        .email-body {
+            padding: 40px 35px;
+            color: #1d1c1d;
+        }
+
+        .greeting {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            color: #1d1c1d;
+        }
+
+        .message {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #4a4a4a;
+            margin: 0 0 20px 0;
+        }
+
+        .workspace-card {
+            background: linear-gradient(180deg, #faf5fc 0%, #f4ebfa 100%);
+            border: 1px solid #e7cef7;
+            border-radius: 10px;
+            padding: 24px 20px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .workspace-badge-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .workspace-label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #611f69;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .workspace-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #4a154b;
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .workspace-inviter {
+            font-size: 14px;
+            color: #6a6a6a;
+            margin: 0 0 14px 0;
+        }
+
+        .workspace-inviter strong {
+            color: #611f69;
+        }
+
+        .role-pill {
+            display: inline-block;
+            background-color: #611f69;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+
+        .highlight {
+            background-color: #f8f3fc;
+            border-left: 4px solid #611f69;
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin: 25px 0;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #4a4a4a;
+        }
+
+        .button-wrapper {
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .confirm-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #611f69 0%, #4a154b 100%);
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 14px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 12px rgba(97, 31, 105, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .confirm-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(97, 31, 105, 0.4);
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #e5e7eb;
+            margin: 30px 0;
+        }
+
+        .security-note {
+            font-size: 13px;
+            color: #6b7280;
+            font-style: italic;
+            margin: 20px 0 0 0;
+            line-height: 1.5;
+        }
+
+        .footer {
+            background-color: #fafafa;
+            padding: 25px 35px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #6b7280;
+            margin: 0 0 8px 0;
+            line-height: 1.5;
+        }
+
+        .footer-text:last-child {
+            margin-bottom: 0;
+        }
+
+        .footer-link {
+            color: #611f69;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .email-wrapper {
+                padding: 20px 10px;
+            }
+
+            .email-header {
+                padding: 30px 20px;
+            }
+
+            .email-body {
+                padding: 30px 20px;
+            }
+
+            .footer {
+                padding: 20px;
+            }
+
+            .greeting {
+                font-size: 20px;
+            }
+
+            .message {
+                font-size: 15px;
+            }
+
+            .workspace-title {
+                font-size: 20px;
+            }
+
+            .confirm-button {
+                padding: 12px 30px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <% const wsName=(typeof workspace_name !=='undefined' && workspace_name) ? workspace_name : ((typeof workspaceName
+        !=='undefined' && workspaceName) ? workspaceName : 'Espacio de trabajo' ); const userRole=(typeof role
+        !=='undefined' && role) ? role : null; const sender=(typeof senderUser !=='undefined' && senderUser) ?
+        senderUser : null; %>
+        <div class="email-wrapper">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td align="center">
+                        <div class="email-container">
+
+                            <!-- HEADER -->
+                            <div class="email-header">
+                                <h1 class="logo">sla<span>k</span></h1>
+                                <div class="header-tag">Invitación a espacio de trabajo</div>
+                            </div>
+
+                            <!-- BODY -->
+                            <div class="email-body">
+                                <h2 class="greeting">¡Hola, <%= userName %>! 👋</h2>
+                                <p class="message">
+                                    <% if (sender) { %>
+                                        ¡Buenas noticias! <strong>
+                                            <%= sender %>
+                                        </strong> te ha invitado a unirte y colaborar en el espacio de trabajo <strong>
+                                            <%= wsName %>
+                                        </strong> en <strong>Slak</strong>.
+                                        <% } else { %>
+                                            ¡Buenas noticias! Has sido invitado a unirte y colaborar en un espacio de
+                                            trabajo en <strong>Slak</strong>.
+                                            <% } %>
+                                </p>
+
+                                <!-- TARJETA DEL ESPACIO DE TRABAJO -->
+                                <div class="workspace-card">
+                                    <div class="workspace-badge-icon">💼</div>
+                                    <span class="workspace-label">Espacio de trabajo</span>
+                                    <h3 class="workspace-title">
+                                        <%= wsName %>
+                                    </h3>
+                                    <% if (sender) { %>
+                                        <p class="workspace-inviter">Invitación enviada por <strong>
+                                                <%= sender %>
+                                            </strong></p>
+                                        <% } %>
+                                            <% if (userRole) { %>
+                                                <span class="role-pill">Rol: <%= userRole==='admin' ? 'Administrador' :
+                                                        (userRole==='owner' ? 'Propietario' : 'Miembro' ) %></span>
+                                                <% } %>
+                                </div>
+
+                                <p class="message">
+                                    Al unirte, podrás conectarte con tus compañeros de equipo, comunicarte en canales
+                                    temáticos, enviar mensajes directos y compartir archivos en tiempo real.
+                                </p>
+
+                                <!-- BOTÓN DE ACCIÓN -->
+                                <div class="button-wrapper">
+                                    <a href="<%= url_backend %>/api/workspace/:<%= workspace_id %>/members/accept-invite/:<%= token %>"
+                                        class="confirm-button">
+                                        🚀 Unirse al espacio de trabajo
+                                    </a>
+                                </div>
+
+                                <!-- INFORMACIÓN ADICIONAL -->
+                                <div class="highlight">
+                                    💡 <strong>¿Cómo acceder?</strong> Haz clic en el botón para ingresar a
+                                    <strong>Slak</strong> con tu cuenta registrada (<strong>
+                                        <%= email %>
+                                    </strong>) y comenzar a interactuar de inmediato.
+                                </div>
+
+                                <div class="divider"></div>
+
+                                <p class="security-note">
+                                    Si no conoces a <%= sender ? sender : 'quien te envió esta invitación' %> o crees
+                                        que se trata de un error, puedes ignorar este correo de forma segura.
+                                </p>
+                            </div>
+
+                            <!-- FOOTER -->
+                            <div class="footer">
+                                <p class="footer-text">
+                                    © 2026 Slak. Todos los derechos reservados.<br>
+                                    Este correo fue enviado a <strong>
+                                        <%= email %>
+                                    </strong>
+                                </p>
+                                <p class="footer-text">
+                                    <a href="<%= url_backend %>" class="footer-link">Visitar sitio</a> ·
+                                    <a href="<%= url_backend %>/soporte" class="footer-link">Soporte</a> ·
+                                    <a href="<%= url_backend %>/privacidad" class="footer-link">Privacidad</a>
+                                </p>
+                            </div>
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+</body>
+
+</html>

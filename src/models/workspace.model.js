@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { USER_COLLECTION_NAME } from "./user.model.js";
 
 const workspaceSchema = new mongoose.Schema(
     {

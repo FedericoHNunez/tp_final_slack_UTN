@@ -19,7 +19,12 @@ const memberSchema = new mongoose.Schema(
             type: String,
             enum: ['admin', 'user', 'owner'],
             default: 'user'
+        },
+        active: {
+            type: Boolean,
+            default: false
         }
+
     },
     {
         timestamps: true

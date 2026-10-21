@@ -21,9 +21,12 @@ class BaseRepository {
     }
 
     async updateById(id, updateData) {
-        return await this.model.findByIdAndUpdate(id, updateData, { returnDocument: 'after' });
+        return await this.model.findByIdAndUpdate(
+            id,
+            updateData,
+            { returnDocument: 'after' }
+        );
     }
-
     async getByDateRange(startDate, endDate) {
         return await this.model.find({
             createdAt: {

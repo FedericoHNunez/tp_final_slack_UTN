@@ -96,18 +96,17 @@ class AuthService {
         return userVerified.userName;
     }
 
-    async resetPassword(email, userName) {
+    async resetPassword(email) {
 
-        if (!email || !userName) {
+        if (!email) {
             throw new ServerError("Invalid credentials", 400);
         }
         if (!isValidEmail(email)) {
             throw new ServerError("Invalid email format.", 400);
         }
         const user = await userRepository.getByEmail(email);
-        if (user.userName !== userName) {
-            throw new ServerError("Invalid credentials", 404);
-        }
+        if (!user) return;
+
         const resetPasswordToken = tokenHelper.createVerifyEmailToken(
             {
                 email: user.email,

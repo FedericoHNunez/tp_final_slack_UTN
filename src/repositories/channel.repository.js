@@ -30,9 +30,8 @@ class ChannelRepository extends BaseRepository {
     );
     return result;
   }
-  async getAllChannelsByWorkpaceId(id_workspace) {
-    const result = await this.model.find({ id_workspace: id_workspace });
-    return result;
+  async getChannelsByWorkspaceId(workspace_id) {
+    return await this.model.find({ id_workspace: workspace_id })
   }
 }
 

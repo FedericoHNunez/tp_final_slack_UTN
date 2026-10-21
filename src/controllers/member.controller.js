@@ -9,7 +9,8 @@ class MemberController {
     }
 
     async getMembers(req, res) {
-        const members = await memberService.getMembers();
+        const workspace_id = req.workspace_selected._id;
+        const members = await memberService.getMembersByWorkspaceId(workspace_id);
         return successResponse(res, "Members retrieved successfully", { members });
     }
 
@@ -17,6 +18,21 @@ class MemberController {
         const { member_id } = req.params;
         const member = await memberService.getMemberById(member_id);
         return successResponse(res, "Member retrieved successfully", { member });
+    }
+    async deleteMember(req, res) {
+        const member_selected = req.member_selected;
+        const user = req.user.id;
+        await memberService.deleteMember(member_selected, user);
+        return successResponse(res, "Member deleted successfully", {});
+    }
+
+    async inviteMember(req, res) {
+        const { emailInvitedUser, role } = req.body;
+        const senderUser = req.user.userName;
+        const workspace_id = req.workspace_selected._id;
+        const workspace_name = req.workspace_selected.name;
+        const member = await memberService.inviteMember(emailInvitedUser, workspace_id, role, senderUser, workspace_name);
+        return successResponse(res, "Member invited successfully", { member });
     }
 }
 

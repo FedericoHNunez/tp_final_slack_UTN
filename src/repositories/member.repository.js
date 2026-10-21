@@ -16,7 +16,7 @@ class MemberRepository extends BaseRepository {
     }
 
     // traer todas las membresias de un usuario
-    async getAllWorkspacesByUserId(userId) {
+    async getWorkspacesByUserId(userId) {
         const members = await this.model
             .find({ id_user: userId })
             .populate('id_workspace');
@@ -30,7 +30,23 @@ class MemberRepository extends BaseRepository {
             .populate('id_user', 'nombre apellido email');
         return members;
     }
+
+    async getWorkspaceMembershipByUserId(user_id, id_workspace) {
+        const membership = await this.model
+            .findOne({ id_user: user_id, id_workspace: id_workspace })
+        return membership
+    }
+
+    async deleteByWorkspaceId(workspace_id) {
+        return await this.model.deleteMany({ id_workspace: workspace_id });
+    }
+
+    async getMenbersByWorkspaceId(workspace_id) {
+        return await this.model.find({ id_workspace: workspace_id })
+            .populate('id_user', 'userName email');
+    }
 }
+
 
 // clase de una sola instancia, no hace falta instanciarla cada vez que se quiera usar
 const memberRepository = new MemberRepository();

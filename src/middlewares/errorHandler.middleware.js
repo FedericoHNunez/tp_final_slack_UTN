@@ -7,6 +7,24 @@ function errorHandler(error, req, res, next) {
             message: error.message,
         });
     }
+    // Error de Token expirado en JWT
+    if (error.name === "TokenExpiredError") {
+        return res.status(401).json({
+            ok: false,
+            status: 401,
+            message: "Token has expired",
+        });
+    }
+
+    // Error de Token inválido en JWT (firma inválida, malformado, etc.)
+    if (error.name === "JsonWebTokenError" || error.name === "NotBeforeError") {
+        return res.status(401).json({
+            ok: false,
+            status: 401,
+            message: "Invalid token",
+        });
+    }
+
     // Error de ID inválido en Mongoose (CastError)
     if (error.name === "CastError") {
         return res.status(400).json({

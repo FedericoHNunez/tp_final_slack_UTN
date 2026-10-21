@@ -1,21 +1,25 @@
 import BaseRepository from './base.repository.js';
 import workspaceModel from '../models/workspace.model.js';
+import channelModel from '../models/channel.model.js';
 
 class WorkspaceRepository extends BaseRepository {
     constructor() {
         super(workspaceModel, 'description');
     }
 
-    async create(nombre, description) {
-        const workspaces = await this.model.create({
-            name: nombre,
+    async create(name, description) {
+        const workspace = await this.model.create({
+            name: name,
             description: description
         });
-        return workspaces;
+        return workspace;
     }
-
-    async getWorkspacesByUserId(user_id) {
-        return await this.model.find({ id_user: user_id });
+    async updateWorkspaceById(id, name, description) {
+        return await this.model.findByIdAndUpdate(
+            id,
+            { name: name, description: description },
+            { returnDocument: 'after' }
+        );
     }
 
 }

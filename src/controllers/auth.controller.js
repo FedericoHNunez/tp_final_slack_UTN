@@ -31,15 +31,15 @@ class AuthController {
     }
 
     async resetPassword(req, res) {
-        const { email, userName } = req.body;
-        await authService.resetPassword(email, userName);
-        return successResponse(res, "Verify your email to reset your password.");
+        const { email } = req.body;
+        await authService.resetPassword(email);
+        return successResponse(res, "If the email exists in our system, you will receive an email to reset your password.");
     }
 
+
     async changePassword(req, res) {
-        const { newPassword, confirmNewPassword } = req.body;
-        const { token_password_reset } = req.params;
-        const { email, userName } = jwt.verify(token_password_reset, ENVIRONMENT.TOKEN_JWT_KEY);
+        const { newPassword, confirmNewPassword, token } = req.body;
+        const { email, userName } = jwt.verify(token, ENVIRONMENT.TOKEN_JWT_KEY);
         await authService.changePassword(email, userName, newPassword, confirmNewPassword);
         return successResponse(res, "Password changed successfully.");
     }

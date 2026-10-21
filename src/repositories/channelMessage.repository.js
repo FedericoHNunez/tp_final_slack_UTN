@@ -15,10 +15,17 @@ class ChannelMessageRepository extends BaseRepository {
             });
         return message;
     }
-    
-    async getByChannelId(channelId) {
+
+    async getMessagesByChannelId(channelId) {
         return await this.model
-            .find({ id_channel: channelId });
+            .find({ id_channel: channelId })
+            .populate('id_user', 'userName')
+            .sort({ createdAt: 1 });
+    }
+
+    async deleteAllMessagesByChannelId(channel_id) {
+        return await this.model
+            .deleteMany({ id_channel: channel_id });
     }
 }
 

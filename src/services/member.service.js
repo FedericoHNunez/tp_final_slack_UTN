@@ -1,4 +1,9 @@
+import tokenHelper from "../helpers/authHelpers/token.helper.js";
+import ServerError from "../helpers/error.helper.js";
 import memberRepository from "../repositories/member.repository.js";
+import userRepository from "../repositories/user.repository.js";
+import emailFormater from "../helpers/emailHelpers/emailFormater.helper.js";
+import mailer_transporter from "../config/mailer.config.js";
 
 class MemberService {
     async createMember(id_user, id_workspace, role = 'user') {
@@ -6,8 +11,8 @@ class MemberService {
         return member;
     }
 
-    async getMembers() {
-        return await memberRepository.getAll();
+    async getMembersByWorkspaceId(workspace_id) {
+        return await memberRepository.getMenbersByWorkspaceId(workspace_id);
     }
 
     async getMemberById(member_id) {
@@ -17,6 +22,44 @@ class MemberService {
         }
         return member;
     }
+    async deleteMemberById(member_selected, user_id) {
+        if (member_selected.role === 'owner') {
+            throw new ServerError("Owner cannot be deleted", 403);
+        }
+        if (member_selected.role === 'admin' && user_id !== member_selected.id_user) {
+            throw new ServerError("You cannot delete an admin", 403);
+        }
+        return await memberRepository.deleteById(member_selected._id);
+    }
+
+    async inviteMember(emailInvitedUser, workspace_id, role, senderUser, workspace_name) {
+        const userInvetedFound = await userRepository.getByEmail(emailInvitedUser);
+        if (!userInvetedFound) {
+            throw new ServerError("User not found", 404);
+        }
+        const userExistingInWorkspace = await memberRepository.getWorkspaceMembershipByUserId(userInvetedFound._id, workspace_id);
+        if (userExistingInWorkspace) {
+            throw new ServerError("User is already a member of this workspace", 400);
+        }
+        if (role != 'admin' && role != 'user') {
+            throw new ServerError("Invalid role", 400);
+        }
+        const newMember = await memberRepository.create(userInvetedFound._id, workspace_id, role);
+
+        const token = await tokenHelper.createVerifyEmailToken({ email: emailInvitedUser, workspace_id }, "7d");
+        const invitationEmail = await emailFormater(
+            userInvetedFound.userName,
+            emailInvitedUser,
+            token,
+            `Unite a nuestro espacio de trabajo ${workspace_name}`,
+            "invitationWorkspaceEmail",
+            { workspace_name, role, workspace_id, senderUser }
+        );
+
+        await mailer_transporter.sendMail(invitationEmail);
+        return newMember;
+    }
+
 }
 
 const memberService = new MemberService();
