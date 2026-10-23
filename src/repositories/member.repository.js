@@ -19,7 +19,8 @@ class MemberRepository extends BaseRepository {
     async getWorkspacesByUserId(userId) {
         const members = await this.model
             .find({ id_user: userId })
-            .populate('id_workspace');
+            .select('id_workspace role updated_at createdAt')
+            .populate('id_workspace', 'name description');
         return members;
     }
 
@@ -35,6 +36,10 @@ class MemberRepository extends BaseRepository {
         const membership = await this.model
             .findOne({ id_user: user_id, id_workspace: id_workspace })
         return membership
+    }
+
+    async updateActive(member_id) {
+        return await this.model.updateOne({ _id: member_id }, { active: true });
     }
 
     async deleteByWorkspaceId(workspace_id) {

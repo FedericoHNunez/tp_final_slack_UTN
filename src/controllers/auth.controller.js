@@ -19,7 +19,7 @@ class AuthController {
         return successResponse(
             res,
             "User logged in successfully.",
-            auth_token
+            { auth_token }
         );
     }
 

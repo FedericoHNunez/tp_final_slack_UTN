@@ -15,6 +15,13 @@ function workSpaceMiddleware(valid_roles = []) {
             );
         }
 
+        if (!req.user) {
+            throw new ServerError(
+                'Authentication required.',
+                401
+            );
+        }
+
         const membership = await memberRepository.getWorkspaceMembershipByUserId(req.user.id, workspace_selected._id);
 
         if (!membership) {

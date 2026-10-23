@@ -80,6 +80,7 @@ class AuthService {
 
     async verifyEmail(email) {
         const userFound = await userRepository.getByEmail(email);
+
         if (!userFound) {
             throw new ServerError("User not found.", 404);
         }

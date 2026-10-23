@@ -4,6 +4,7 @@ import memberRepository from "../repositories/member.repository.js";
 import userRepository from "../repositories/user.repository.js";
 import emailFormater from "../helpers/emailHelpers/emailFormater.helper.js";
 import mailer_transporter from "../config/mailer.config.js";
+import invitationRepository from "../repositories/invitation.repository.js";
 
 class MemberService {
     async createMember(id_user, id_workspace, role = 'user') {
@@ -33,20 +34,29 @@ class MemberService {
     }
 
     async inviteMember(emailInvitedUser, workspace_id, role, senderUser, workspace_name) {
+
         const userInvetedFound = await userRepository.getByEmail(emailInvitedUser);
         if (!userInvetedFound) {
             throw new ServerError("User not found", 404);
         }
         const userExistingInWorkspace = await memberRepository.getWorkspaceMembershipByUserId(userInvetedFound._id, workspace_id);
+
         if (userExistingInWorkspace) {
             throw new ServerError("User is already a member of this workspace", 400);
         }
-        if (role != 'admin' && role != 'user') {
-            throw new ServerError("Invalid role", 400);
-        }
-        const newMember = await memberRepository.create(userInvetedFound._id, workspace_id, role);
 
-        const token = await tokenHelper.createVerifyEmailToken({ email: emailInvitedUser, workspace_id }, "7d");
+        if (role === 'owner') {
+            throw new ServerError("You cannot invite an owner", 400);
+        }
+
+        const invitation = await invitationRepository.create(userInvetedFound._id, workspace_id, role);
+
+        const token = await tokenHelper.createVerifyEmailToken(
+            {
+                invitation_id: invitation._id,
+                role: role,
+            }, "7d"
+        );
         const invitationEmail = await emailFormater(
             userInvetedFound.userName,
             emailInvitedUser,
@@ -57,9 +67,38 @@ class MemberService {
         );
 
         await mailer_transporter.sendMail(invitationEmail);
-        return newMember;
+
+        return invitation;
     }
 
+    async acceptInvite(invitation_id, role) {
+
+
+        const invitationFound = await invitationRepository.getById(invitation_id);
+        if (!invitationFound.active) {
+            throw new ServerError("Invitation not found or already used", 404);
+        }
+        const userInvetedFound = await userRepository.getById(invitationFound.id_invitedUser);
+        if (!userInvetedFound) {
+            throw new ServerError("Invited user not found", 404);
+        }
+        const userExistingInWorkspace = await memberRepository.getWorkspaceMembershipByUserId(invitationFound.id_invitedUser, invitationFound.id_workspace);
+        if (userExistingInWorkspace) {
+            throw new ServerError("User is already a member of this workspace", 400);
+        }
+
+        const newMember = await memberRepository.create(
+            invitationFound.id_invitedUser,
+            invitationFound.id_workspace,
+            role,
+            true
+        );
+
+        invitationFound.active = false;
+        await invitationFound.save();
+
+        return newMember;
+    }
 }
 
 const memberService = new MemberService();

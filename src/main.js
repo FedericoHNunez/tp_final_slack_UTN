@@ -10,13 +10,14 @@ import directMessageRouter from "./routes/directMessage.router.js";
 import ENVIRONMENT from "./config/environment.config.js";
 import memberRouter from "./routes/member.router.js";
 import authMiddleware from "./middlewares/auth.middleware.js";
+import cors from 'cors';
 // 1. Connect to the database
 
 await connectMongoDB();
 
 const PORT = ENVIRONMENT.PORT;
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 
 // Middleware to catch JSON format errors (SyntaxError)
@@ -34,7 +35,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", authMiddleware, userRouter);
 
 // Workspaces (includes channels sub-router)
-app.use('/api/workspaces', authMiddleware, workspaceRouter);
+app.use('/api/workspaces', workspaceRouter);
 
 
 
@@ -53,3 +54,8 @@ app.listen(PORT, () => {
 
 
 
+/* 
+(autentificado) /api/wokspace
+  traer la lista de trabajo de ese usuario
+
+*/

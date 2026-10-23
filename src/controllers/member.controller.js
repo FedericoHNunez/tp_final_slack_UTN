@@ -1,5 +1,7 @@
 import memberService from "../services/member.service.js";
 import successResponse from "../helpers/response.helper.js";
+import jwt from "jsonwebtoken";
+import ENVIRONMENT from "../config/environment.config.js";
 
 class MemberController {
     async createMember(req, res) {
@@ -27,12 +29,19 @@ class MemberController {
     }
 
     async inviteMember(req, res) {
-        const { emailInvitedUser, role } = req.body;
+        const { email, role } = req.body;
         const senderUser = req.user.userName;
         const workspace_id = req.workspace_selected._id;
         const workspace_name = req.workspace_selected.name;
-        const member = await memberService.inviteMember(emailInvitedUser, workspace_id, role, senderUser, workspace_name);
-        return successResponse(res, "Member invited successfully", { member });
+        const invitation = await memberService.inviteMember(email, workspace_id, role, senderUser, workspace_name);
+        return successResponse(res, "User invited successfully", { invitation });
+    }
+
+    async acceptInvite(req, res) {
+        const { invitation_token } = req.params;
+        const { invitation_id, role } = jwt.verify(invitation_token, ENVIRONMENT.TOKEN_JWT_KEY);
+        const member = await memberService.acceptInvite(invitation_id, role);
+        return successResponse(res, "Member accepted invite successfully", { member });
     }
 }
 

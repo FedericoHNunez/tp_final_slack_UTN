@@ -27,7 +27,17 @@ class WorkspaceService {
             );
         }
         const members = await memberRepository.getWorkspacesByUserId(user_id);
-        return members.map(member => member.id_workspace);
+        const memberFormated = members.map(member => {
+            return {
+                member_id: member._id,
+                workspace_id: member.id_workspace._id,
+                workspace_name: member.id_workspace.name,
+                workspace_description: member.id_workspace.description,
+                workspace_role: member.role,
+                workspace_creation_date: member.createdAt
+            }
+        })
+        return memberFormated;
     }
 
     async createWorkspace(name, description) {
