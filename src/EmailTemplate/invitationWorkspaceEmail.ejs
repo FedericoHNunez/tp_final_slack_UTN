@@ -261,7 +261,7 @@
 
                             <!-- HEADER -->
                             <div class="email-header">
-                                <h1 class="logo">sla<span>k</span></h1>
+                                <h1 class="logo">slac<span>k</span></h1>
                                 <div class="header-tag">Invitación a espacio de trabajo</div>
                             </div>
 
@@ -274,10 +274,10 @@
                                             <%= sender %>
                                         </strong> te ha invitado a unirte y colaborar en el espacio de trabajo <strong>
                                             <%= wsName %>
-                                        </strong> en <strong>Slak</strong>.
+                                        </strong> en <strong>Slack</strong>.
                                         <% } else { %>
                                             ¡Buenas noticias! Has sido invitado a unirte y colaborar en un espacio de
-                                            trabajo en <strong>Slak</strong>.
+                                            trabajo en <strong>Slack</strong>.
                                             <% } %>
                                 </p>
 
@@ -295,7 +295,8 @@
                                         <% } %>
                                             <% if (userRole) { %>
                                                 <span class="role-pill">Rol: <%= userRole==='admin' ? 'Administrador' :
-                                                        (userRole==='owner' ? 'Propietario' : 'Usuario Miembro' ) %></span>
+                                                        (userRole==='owner' ? 'Propietario' : 'Usuario Miembro' ) %>
+                                                </span>
                                                 <% } %>
                                 </div>
 
@@ -315,7 +316,7 @@
                                 <!-- INFORMACIÓN ADICIONAL -->
                                 <div class="highlight">
                                     💡 <strong>¿Cómo acceder?</strong> Haz clic en el botón para ingresar a
-                                    <strong>Slak</strong> con tu cuenta registrada (<strong>
+                                    <strong>Slack</strong> con tu cuenta registrada (<strong>
                                         <%= email %>
                                     </strong>) y comenzar a interactuar de inmediato.
                                 </div>
@@ -331,10 +332,10 @@
                             <!-- FOOTER -->
                             <div class="footer">
                                 <p class="footer-text">
-                                    © 2026 Slak. Todos los derechos reservados.<br>
-                                    Este correo fue enviado a <strong>
-                                        <%= email %>
-                                    </strong>
+                                    <%= new Date().getFullYear() %> Slack. Todos los derechos reservados.<br>
+                                        Este correo fue enviado a <strong>
+                                            <%= email %>
+                                        </strong>
                                 </p>
                                 <p class="footer-text">
                                     <a href="<%= url_backend %>" class="footer-link">Visitar sitio</a> ·
